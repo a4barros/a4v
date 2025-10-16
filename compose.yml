@@ -1,7 +1,12 @@
 services:
-  main-page:
+  a4video:
     restart: unless-stopped
     build: .
     volumes:
       - ./public:/usr/share/nginx/html:ro
-    network_mode: host
+    networks:
+      - net
+
+networks:
+  net:
+    external: true
