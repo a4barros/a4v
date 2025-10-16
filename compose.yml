@@ -1,0 +1,7 @@
+services:
+  main-page:
+    restart: unless-stopped
+    build: .
+    volumes:
+      - ./public:/usr/share/nginx/html:ro
+    network_mode: host
