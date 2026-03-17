@@ -3,8 +3,8 @@ services:
     restart: unless-stopped
     build: .
     volumes:
-      - ./public:/usr/share/nginx/html:ro
-      - ./errors:/usr/share/nginx/html/errors:ro
+      - ./public:/usr/share/nginx/html
+      - ./errors:/usr/share/nginx/html/errors
     networks:
       - net
 
