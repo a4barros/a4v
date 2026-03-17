@@ -4,6 +4,7 @@ services:
     build: .
     volumes:
       - ./public:/usr/share/nginx/html:ro
+      - ./errors:/usr/share/nginx/html/errors:ro
     networks:
       - net
 
