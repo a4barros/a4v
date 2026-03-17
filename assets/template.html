@@ -4,32 +4,41 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:title" content="{{ video_name }}">
+    <meta property="og:description" content="Description">
+    <meta property="og:image" content="https://v.a4barros.com/{{ video_name }}/thumbnail.jpg">
+    <meta property="og:type" content="video.other">
     <title>{{ video_name }} | A4Video</title>
     <style>
         body {
             font-family: sans-serif;
             text-align: center;
-            background: #121212;
+            background: #222226;
             color: #eee;
             padding: 2em;
+	    background-image: url("bg.png");
         }
 
         video {
-            width: 80%;
-            max-width: 800px;
+            width: 85%;
+	    max-width: 1200px;
             border-radius: 12px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
+
+	h1 {
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+	    font-size: clamp(1rem, 4vw, 2.5rem);
+	    margin-bottom: 40px;
+	}
     </style>
 </head>
 
 <body>
-    <h1>{{ video_name }} - A4Video</h1>
+    <h1>{{ video_name }}</h1>
 
     <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
-    <!-- Or if you want the latest version from the main branch -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/hls.js@canary"></script> -->
-    <video id="video" controls></video>
+    <video id="video" controls poster="thumbnail.jpg"></video>
     <script>
         var video = document.getElementById('video');
         var videoSrc = 'master.m3u8';
@@ -38,13 +47,6 @@
             hls.loadSource(videoSrc);
             hls.attachMedia(video);
         }
-        // HLS.js is not supported on platforms that do not have Media Source
-        // Extensions (MSE) enabled.
-        //
-        // When the browser has built-in HLS support (check using `canPlayType`),
-        // we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video
-        // element through the `src` property. This is using the built-in support
-        // of the plain video element, without using HLS.js.
         else if (video.canPlayType('application/vnd.apple.mpegurl')) {
             video.src = videoSrc;
         }

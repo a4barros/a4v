@@ -55,8 +55,23 @@ for REND in "${RENDITIONS[@]}"; do
   echo "${HEIGHT}p.m3u8" >> "$MASTER_PLAYLIST"
 done
 
-# Copy index.html
+# Get video duration in seconds
+DURATION=$(ffprobe -v error -show_entries format=duration \
+  -of default=noprint_wrappers=1:nokey=1 "$INPUT")
+
+# Copy assets
 cp assets/template.html $OUTPUT_DIR/index.html
+cp assets/bg.png $OUTPUT_DIR/bg.png
 sed -i "s/{{ video_name }}/$BASENAME/g" $OUTPUT_DIR/index.html
+
+# Generate random timestamp
+RAND_TIME=$(awk -v dur="$DURATION" 'BEGIN{srand(); print rand()*dur}')
+
+echo "🖼 Generating thumbnail at ${RAND_TIME}s"
+
+ffmpeg -y -ss "$RAND_TIME" -i "$INPUT" \
+  -frames:v 1 \
+  -q:v 2 \
+  "${OUTPUT_DIR}/thumbnail.jpg"
 
 echo "Output directory: $OUTPUT_DIR"
