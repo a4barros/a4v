@@ -16,6 +16,16 @@
     
     <nav>
         <h1>A4 Video</h1>
+        <div class="nav-stats">
+            <div class="stat-item">
+                <span id="view-count">0</span>
+                <span class="stat-label">Views</span>
+            </div>
+            <button id="like-btn" class="like-button">
+                <span>👍</span>
+                <span id="like-count">0</span>
+            </button>
+        </div>
     </nav>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
     <div class="video-container">
@@ -23,16 +33,7 @@
         <h1>{{ video_name }}</h1>
     </div>
     <script>
-        var video = document.getElementById('video');
-        var videoSrc = 'master.m3u8';
-        if (Hls.isSupported()) {
-            var hls = new Hls();
-            hls.loadSource(videoSrc);
-            hls.attachMedia(video);
-        }
-        else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = videoSrc;
-        }
+       
     </script>
 </body>
 

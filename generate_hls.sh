@@ -61,6 +61,8 @@ DURATION=$(ffprobe -v error -show_entries format=duration \
 
 # Copy assets
 cp assets/template.html $OUTPUT_DIR/index.html
+cp assets/style.css $OUTPUT_DIR/style.css
+cp assets/index.js $OUTPUT_DIR/index.js
 cp assets/bg.png $OUTPUT_DIR/bg.png
 sed -i "s/{{ video_name }}/$BASENAME/g" $OUTPUT_DIR/index.html
 # Ask the user for a description

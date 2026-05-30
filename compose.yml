@@ -1,4 +1,14 @@
 services:
+  fastapi:
+    restart: unless-stopped
+    build: ./backend
+    volumes:
+      - ./backend/data:/app/data
+    networks:
+      - net
+    expose:
+      - "8001"
+
   a4video:
     restart: unless-stopped
     build: .
@@ -7,6 +17,10 @@ services:
       - ./errors:/usr/share/nginx/errors:ro
     networks:
       - net
+    depends_on:
+      - fastapi
+    ports:
+      - "8000:8000"
 
 networks:
   net:
