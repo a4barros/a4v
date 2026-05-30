@@ -63,6 +63,9 @@ DURATION=$(ffprobe -v error -show_entries format=duration \
 cp assets/template.html $OUTPUT_DIR/index.html
 cp assets/bg.png $OUTPUT_DIR/bg.png
 sed -i "s/{{ video_name }}/$BASENAME/g" $OUTPUT_DIR/index.html
+# Ask the user for a description
+read -p "Enter a description for the video: " DESCRIPTION
+sed -i "s/{{ video_description }}/$DESCRIPTION/g" $OUTPUT_DIR/index.html
 
 # Generate random timestamp
 RAND_TIME=$(awk -v dur="$DURATION" 'BEGIN{srand(); print rand()*dur}')
@@ -73,5 +76,11 @@ ffmpeg -y -ss "$RAND_TIME" -i "$INPUT" \
   -frames:v 1 \
   -q:v 2 \
   "${OUTPUT_DIR}/thumbnail.jpg"
+
+ffmpeg -y -ss "$RAND_TIME" -i "$INPUT" \
+  -frames:v 1 \
+  -q:v 2 \
+  -vf "scale=1200:630:force_original_aspect_ratio=decrease,pad=1200:630:(ow-iw)/2:(oh-ih)/2" \
+  "${OUTPUT_DIR}/thumbnail_for_og.jpg"
 
 echo "Output directory: $OUTPUT_DIR"

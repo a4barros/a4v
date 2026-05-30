@@ -5,8 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta property="og:title" content="{{ video_name }}">
-    <meta property="og:description" content="Description">
-    <meta property="og:image" content="https://v.a4barros.com/{{ video_name }}/thumbnail.jpg">
+    <meta property="og:description" content="{{ video_description }}">
+    <meta property="og:image" content="https://v.a4barros.com/{{ video_name }}/thumbnail_for_og.jpg">
     <meta property="og:type" content="video.other">
     <title>{{ video_name }} | A4Video</title>
     <style>
@@ -27,7 +27,7 @@
         }
 
 	h1 {
-            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 	    font-size: clamp(1rem, 4vw, 2.5rem);
 	    margin-bottom: 40px;
 	}
