@@ -9,36 +9,19 @@
     <meta property="og:image" content="https://v.a4barros.com/{{ video_name }}/thumbnail_for_og.jpg">
     <meta property="og:type" content="video.other">
     <title>{{ video_name }} | A4Video</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            text-align: center;
-            background: #222226;
-            color: #eee;
-            padding: 2em;
-	    background-image: url("bg.png");
-        }
-
-        video {
-            width: 85%;
-	    max-width: 1200px;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-
-	h1 {
-        text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-	    font-size: clamp(1rem, 4vw, 2.5rem);
-	    margin-bottom: 40px;
-	}
-    </style>
+    <link rel="stylesheet" href="./style.css" />
 </head>
 
 <body>
-    <h1>{{ video_name }}</h1>
-
+    
+    <nav>
+        <h1>A4 Video</h1>
+    </nav>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
-    <video id="video" controls poster="thumbnail.jpg"></video>
+    <div class="video-container">
+        <video id="video" controls poster="thumbnail.jpg"></video>
+        <h1>{{ video_name }}</h1>
+    </div>
     <script>
         var video = document.getElementById('video');
         var videoSrc = 'master.m3u8';
