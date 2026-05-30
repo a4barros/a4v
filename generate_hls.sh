@@ -60,10 +60,8 @@ DURATION=$(ffprobe -v error -show_entries format=duration \
   -of default=noprint_wrappers=1:nokey=1 "$INPUT")
 
 # Copy assets
-cp assets/template.html $OUTPUT_DIR/index.html
-cp assets/style.css $OUTPUT_DIR/style.css
-cp assets/index.js $OUTPUT_DIR/index.js
-cp assets/bg.png $OUTPUT_DIR/bg.png
+cp assets/* $OUTPUT_DIR/
+
 sed -i "s/{{ video_name }}/$BASENAME/g" $OUTPUT_DIR/index.html
 # Ask the user for a description
 read -p "Enter a description for the video: " DESCRIPTION
