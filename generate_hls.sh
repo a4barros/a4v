@@ -26,6 +26,17 @@ RENDITIONS=(
   "1080:5000k:192k"
 )
 
+read -p "Enter a title for the video: " TITLE
+sed -i "s/{{ video_name }}/$TITLE/g" $OUTPUT_DIR/index.html
+
+read -p "Enter a description for the video: " DESCRIPTION
+sed -i "s/{{ video_description }}/$DESCRIPTION/g" $OUTPUT_DIR/index.html
+
+read -p "Do you want to encode a 4K version? (y/n) " ENCODE_4K
+if [[ "$ENCODE_4K" == "y" ]]; then
+  RENDITIONS+=("2160:15000k:320k")
+fi
+
 # Create variant playlists
 for REND in "${RENDITIONS[@]}"; do
   HEIGHT=$(echo "$REND" | cut -d: -f1)
@@ -61,11 +72,6 @@ DURATION=$(ffprobe -v error -show_entries format=duration \
 
 # Copy assets
 cp assets/* $OUTPUT_DIR/
-
-sed -i "s/{{ video_name }}/$BASENAME/g" $OUTPUT_DIR/index.html
-# Ask the user for a description
-read -p "Enter a description for the video: " DESCRIPTION
-sed -i "s/{{ video_description }}/$DESCRIPTION/g" $OUTPUT_DIR/index.html
 
 # Generate random timestamp
 RAND_TIME=$(awk -v dur="$DURATION" 'BEGIN{srand(); print rand()*dur}')
