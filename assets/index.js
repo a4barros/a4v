@@ -62,14 +62,3 @@ document.getElementById('like-btn').addEventListener('click', toggleLike);
 document.getElementById('video').addEventListener('play', incrementView, { once: true });
 
 fetchStats();
-
-var video = document.getElementById('video');
-var videoSrc = 'master.m3u8';
-if (Hls.isSupported()) {
-    var hls = new Hls();
-    hls.loadSource(videoSrc);
-    hls.attachMedia(video);
-}
-else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    video.src = videoSrc;
-}
