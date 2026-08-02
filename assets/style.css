@@ -55,6 +55,22 @@ h1 {
     margin: 1rem 0 0;
 }
 
+.download-button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.7rem 1.2rem;
+    background-color: #2f7fff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.download-button:hover {
+    background-color: #2366cc;
+}
+
 .nav-stats {
     display: flex;
     align-items: center;

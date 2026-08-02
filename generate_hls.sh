@@ -12,10 +12,16 @@ fi
 
 # Base name without extension
 BASENAME=$(basename "$INPUT" | cut -d. -f1)
+ORIGINAL_FILENAME=$(basename "$INPUT")
+ORIGINAL_DEST="public/$BASENAME/$ORIGINAL_FILENAME"
 
 # Output folder
 OUTPUT_DIR="public/$BASENAME"
 mkdir -p "$OUTPUT_DIR"
+
+# Work from a temporary copy so the original source can be moved into the public folder afterward
+WORKING_INPUT=$(mktemp "${TMPDIR:-/tmp}/a4v-input.XXXXXX")
+cp "$INPUT" "$WORKING_INPUT"
 
 # Define renditions (resolution and bitrate)
 # Format: "<height>:<video_bitrate>:<audio_bitrate>"
@@ -42,7 +48,7 @@ for REND in "${RENDITIONS[@]}"; do
 
   echo "➡️  Processing ${HEIGHT}p (${VB} video / ${AB} audio)"
 
-  ffmpeg -y -i "$INPUT" \
+  ffmpeg -y -i "$WORKING_INPUT" \
     -vf "scale=-2:${HEIGHT}" \
     -c:a aac -ar 48000 -b:a $AB \
     -c:v h264 -profile:v main -crf 20 -g 48 -keyint_min 48 \
@@ -75,18 +81,22 @@ RAND_TIME=$(awk -v dur="$DURATION" 'BEGIN{srand(); print rand()*dur}')
 
 echo "🖼 Generating thumbnail at ${RAND_TIME}s"
 
-ffmpeg -y -ss "$RAND_TIME" -i "$INPUT" \
+ffmpeg -y -ss "$RAND_TIME" -i "$WORKING_INPUT" \
   -frames:v 1 \
   -q:v 2 \
   "${OUTPUT_DIR}/thumbnail.jpg"
 
-ffmpeg -y -ss "$RAND_TIME" -i "$INPUT" \
+ffmpeg -y -ss "$RAND_TIME" -i "$WORKING_INPUT" \
   -frames:v 1 \
   -q:v 2 \
   -vf "scale=1200:630:force_original_aspect_ratio=decrease,pad=1200:630:(ow-iw)/2:(oh-ih)/2" \
   "${OUTPUT_DIR}/thumbnail_for_og.jpg"
 
+mv "$INPUT" "$ORIGINAL_DEST"
+rm -f "$WORKING_INPUT"
+
 sed -i "s/{{ video_name }}/$TITLE/g" $OUTPUT_DIR/index.html
 sed -i "s/{{ video_description }}/$DESCRIPTION/g" $OUTPUT_DIR/index.html
+sed -i "s|{{ download_url }}|$ORIGINAL_FILENAME|g" "$OUTPUT_DIR/index.html"
 
 echo "Output directory: $OUTPUT_DIR"
